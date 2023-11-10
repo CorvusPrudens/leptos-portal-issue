@@ -10,10 +10,9 @@ pub fn App() -> impl IntoView {
 
     view! {
 
-
         // injects a stylesheet into the document <head>
         // id=leptos means cargo-leptos will hot-reload this stylesheet
-        <Stylesheet id="leptos" href="/pkg/{{project-name}}.css"/>
+        <Stylesheet id="leptos" href="/pkg/leptos-portal-issue.css"/>
 
         // sets the document title
         <Title text="Welcome to Leptos"/>
@@ -39,12 +38,20 @@ pub fn App() -> impl IntoView {
 /// Renders the home page of your application.
 #[component]
 fn HomePage() -> impl IntoView {
-    // Creates a reactive value to update the button
-    let (count, set_count) = create_signal(0);
-    let on_click = move |_| set_count.update(|count| *count += 1);
+    let (show, set_show) = create_signal(false);
+    create_effect(move |_| set_show(true));
 
     view! {
-        <h1>"Welcome to Leptos!"</h1>
-        <button on:click=on_click>"Click Me: " {count}</button>
+        <h1>"This resides within the normal flow."</h1>
+
+        <Show when=show>
+            <Portal>
+                <h1>"This resides outside the normal flow and mounts properly."</h1>
+            </Portal>
+        </Show>
+
+        <Portal>
+            <h1>"This resides outside the normal flow and does not mount."</h1>
+        </Portal>
     }
 }
