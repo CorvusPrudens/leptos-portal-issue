@@ -42,16 +42,14 @@ fn HomePage() -> impl IntoView {
     create_effect(move |_| set_show(true));
 
     view! {
-        <h1>"This resides within the normal flow."</h1>
-
         <Show when=show>
             <Portal>
-                <h1>"This resides outside the normal flow and mounts properly."</h1>
+                <h1>"This mounts properly."</h1>
             </Portal>
         </Show>
 
         <Portal>
-            <h1>"This resides outside the normal flow and does not mount."</h1>
+            <h1>"This does not mount."</h1>
         </Portal>
     }
 }
